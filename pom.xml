@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.3.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.bing.lan</groupId>
+    <artifactId>starter</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>starter</name>
+    <packaging>war</packaging>
+    <description>Demo project for Spring Boot</description>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+        <!-- spring-boot-starter-web 才内嵌了tomcat, 也能用外部tomcat启动,
+          非web项目貌似没内嵌tomcat, 无需tomcat就能启动?? -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!--去除内嵌tomcat, 用SpringBootStarter启动, 是跑不起来的, 测试出在哪里使用了内嵌的tomcat
+         AnnotationConfigServletWebServerApplicationContext子类
+         ServletWebServerApplicationContext.createWebServer()使用了
+
+        -->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-web</artifactId>-->
+            <!--&lt;!&ndash; 去除内嵌tomcat &ndash;&gt;-->
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>org.springframework.boot</groupId>-->
+                    <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
+        <!--</dependency>-->
+
+        <!-- 为什么移除了tomcat依赖, 还要把servlet依赖添加进来??
+                用SpringBootStarter启动时, 如果检测不到servlet类的话(WebApplicationType.deduceFromClasspath()方法检测) ,
+                就会当成 普通程序执行 AnnotationConfigApplicationContext , 反之 AnnotationConfigServletWebServerApplicationContext,
+                所以为了测试出哪里使用了内嵌tomcat 还是需要手动把依赖添加进来
+        -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
